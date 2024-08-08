@@ -69,11 +69,10 @@ public struct SWContainerView<T: View>: View {
         .onAppear {
             viewModel.setContainerStyle(style)
             guard let firstField = viewModel.fields.first,
-                  style.startWithFocusedField.start,
-                  style.startWithFocusedField.after > 0
+                  style.startWithFocusedFieldAfter > 0
             else { return }
             Task { @MainActor in
-                try await Task.sleep(nanoseconds: UInt64(style.startWithFocusedField.after) * 1_000_000_000)
+                try await Task.sleep(nanoseconds: UInt64(style.startWithFocusedFieldAfter) * 1_000_000_000)
                 if viewModel.focusedFieldID == nil {
                     viewModel.setFocus(on: firstField.id.wrappedValue)
                 }

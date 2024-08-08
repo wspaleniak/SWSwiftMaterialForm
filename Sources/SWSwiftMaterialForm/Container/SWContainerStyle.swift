@@ -11,7 +11,7 @@ import SwiftUI
 public struct SWContainerStyle {
     
     /// Whether the form should focused the first field and after what time (in seconds).
-    var startWithFocusedField: (start: Bool, after: Int) = (false, 0)
+    var startWithFocusedFieldAfter: Int = 0
     
     /// If some field in the container is focused, it allows to unfocus it.
     /// You can use it e.g. for hide the keyboard when the user taps on the background.
@@ -65,11 +65,11 @@ extension View {
 
 // MARK: - Start with focused field
 
-public struct StartWithFocusedFieldSWContainerStyleValue: SWContainerStyleValue {
-    public var keyPath: WritableKeyPath<SWContainerStyle, (start: Bool, after: Int)> { \.startWithFocusedField }
+public struct StartWithFocusedFieldAfterSWContainerStyleValue: SWContainerStyleValue {
+    public var keyPath: WritableKeyPath<SWContainerStyle, Int> { \.startWithFocusedFieldAfter }
 }
-extension SWContainerStyleValue where Self == StartWithFocusedFieldSWContainerStyleValue {
-    public static var startWithFocusedField: Self { StartWithFocusedFieldSWContainerStyleValue() }
+extension SWContainerStyleValue where Self == StartWithFocusedFieldAfterSWContainerStyleValue {
+    public static var startWithFocusedFieldAfter: Self { StartWithFocusedFieldAfterSWContainerStyleValue() }
 }
 
 // MARK: - Unfocus fields
