@@ -49,7 +49,6 @@ public struct SWContainerView<T: View>: View {
             builder()
                 .environmentObject(viewModel)
         }
-        .background(style.backgroundColor)
         .onPreferenceChange(SWFieldPreferenceKey.self) { newFields in
             newFields.enumerated().forEach { index, fieldData in
                 fieldData.id.wrappedValue = index
