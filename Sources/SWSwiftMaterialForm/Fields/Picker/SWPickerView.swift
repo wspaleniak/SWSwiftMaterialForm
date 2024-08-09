@@ -345,20 +345,22 @@ public struct SWPickerView: View {
     }
     
     private var toolbar: some View {
-        HStack(spacing: Constants.toolbarHorizontalInset) {
+        HStack(spacing: .zero) {
             if containerViewModel.fields.count > 1 {
-                Button {
-                    containerViewModel.action(.previousField)
-                } label: {
-                    Image(systemName: "chevron.left")
-                }
-                Button {
-                    containerViewModel.action(.nextField)
-                } label: {
-                    Image(systemName: "chevron.right")
+                HStack(spacing: Constants.toolbarHorizontalInset) {
+                    Button {
+                        containerViewModel.action(.previousField)
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                    Button {
+                        containerViewModel.action(.nextField)
+                    } label: {
+                        Image(systemName: "chevron.right")
+                    }
                 }
             }
-            Spacer()
+            Spacer(minLength: .zero)
             Button {
                 containerViewModel.action(.hideKeyboard)
             } label: {

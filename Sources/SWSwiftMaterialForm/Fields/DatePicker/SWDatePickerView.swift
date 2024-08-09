@@ -79,6 +79,11 @@ public struct SWDatePickerView: View {
     @State
     private var textHeight: CGFloat = .zero
     
+    /// The width of the field.
+    /// Used for set the maximum width of the picker.
+    @State
+    private var fieldWidth: CGFloat = .zero
+    
     /// The minimum height of the field.
     private var minFieldHeight: CGFloat {
         textHeight + 2 * Constants.inset + style.insets.top + style.insets.bottom
@@ -329,6 +334,7 @@ public struct SWDatePickerView: View {
         .overlay {
             label
         }
+        .readSize { fieldWidth = $0.width }
     }
     
     private var label: some View {
@@ -388,24 +394,27 @@ public struct SWDatePickerView: View {
             selection: $selectedDate,
             displayedComponents: components
         )
+        .frame(maxWidth: fieldWidth)
         .datePickerStyle(.wheel)
     }
     
     private var toolbar: some View {
-        HStack(spacing: Constants.toolbarHorizontalInset) {
+        HStack(spacing: .zero) {
             if containerViewModel.fields.count > 1 {
-                Button {
-                    containerViewModel.action(.previousField)
-                } label: {
-                    Image(systemName: "chevron.left")
-                }
-                Button {
-                    containerViewModel.action(.nextField)
-                } label: {
-                    Image(systemName: "chevron.right")
+                HStack(spacing: Constants.toolbarHorizontalInset) {
+                    Button {
+                        containerViewModel.action(.previousField)
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                    Button {
+                        containerViewModel.action(.nextField)
+                    } label: {
+                        Image(systemName: "chevron.right")
+                    }
                 }
             }
-            Spacer()
+            Spacer(minLength: .zero)
             Button {
                 containerViewModel.action(.hideKeyboard)
             } label: {
