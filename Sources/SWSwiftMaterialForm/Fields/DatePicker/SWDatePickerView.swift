@@ -393,15 +393,17 @@ public struct SWDatePickerView: View {
     
     private var toolbar: some View {
         HStack(spacing: Constants.toolbarHorizontalInset) {
-            Button {
-                containerViewModel.action(.previousField)
-            } label: {
-                Image(systemName: "chevron.left")
-            }
-            Button {
-                containerViewModel.action(.nextField)
-            } label: {
-                Image(systemName: "chevron.right")
+            if containerViewModel.fields.count > 1 {
+                Button {
+                    containerViewModel.action(.previousField)
+                } label: {
+                    Image(systemName: "chevron.left")
+                }
+                Button {
+                    containerViewModel.action(.nextField)
+                } label: {
+                    Image(systemName: "chevron.right")
+                }
             }
             Spacer()
             Button {
