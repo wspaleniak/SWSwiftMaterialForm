@@ -56,11 +56,18 @@ public struct SWContainerView<T: View>: View {
             viewModel.updateContainerFields(with: newFields)
             errors = viewModel.hasContainerErrors(for: newFields)
         }
-        .onChange(of: style.unfocusFields.wrappedValue) { newValue in
-            if newValue { viewModel.setFocus(on: nil) }
-        }
         .onChange(of: viewModel.focusedFieldID) { newValue in
             if newValue != nil { style.unfocusFields.wrappedValue = false }
+            style.focusedFieldID.wrappedValue = newValue
+        }
+        .onChange(of: style.focusedFieldID.wrappedValue) { newValue in
+            guard newValue != viewModel.focusedFieldID else {
+                return
+            }
+            viewModel.setFocus(on: newValue)
+        }
+        .onChange(of: style.unfocusFields.wrappedValue) { newValue in
+            if newValue { viewModel.setFocus(on: nil) }
         }
         .onTapGesture {
             viewModel.setFocus(on: nil)

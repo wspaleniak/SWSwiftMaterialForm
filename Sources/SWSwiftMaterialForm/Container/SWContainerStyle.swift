@@ -13,6 +13,10 @@ public struct SWContainerStyle {
     /// Whether the form should focused the first field and after what time (in seconds).
     var startWithFocusedFieldAfter: Int = 0
     
+    /// The ID of the focused field.
+    /// You can use it for change the focused field outside the package.
+    var focusedFieldID: Binding<Int?> = .constant(nil)
+    
     /// If some field in the container is focused, it allows to unfocus it.
     /// You can use it e.g. for hide the keyboard when the user taps on the background.
     var unfocusFields: Binding<Bool> = .constant(false)
@@ -70,6 +74,15 @@ public struct StartWithFocusedFieldAfterSWContainerStyleValue: SWContainerStyleV
 }
 extension SWContainerStyleValue where Self == StartWithFocusedFieldAfterSWContainerStyleValue {
     public static var startWithFocusedFieldAfter: Self { StartWithFocusedFieldAfterSWContainerStyleValue() }
+}
+
+// MARK: - Focused field ID
+
+public struct FocusedFieldIDSWContainerStyleValue: SWContainerStyleValue {
+    public var keyPath: WritableKeyPath<SWContainerStyle, Binding<Int?>> { \.focusedFieldID }
+}
+extension SWContainerStyleValue where Self == FocusedFieldIDSWContainerStyleValue {
+    public static var focusedFieldID: Self { FocusedFieldIDSWContainerStyleValue() }
 }
 
 // MARK: - Unfocus fields
