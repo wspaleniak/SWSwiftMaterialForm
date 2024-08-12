@@ -314,7 +314,7 @@ public struct SWTextFieldView: View {
     }
     
     private var disabledIcon: some View {
-        Image(systemName: "lock.fill")
+        (style.disabledIcon ?? Image(systemName: "lock.fill"))
             .font(style.configuration.fonts.text)
             .foregroundStyle(style.configuration.colors.labelDisabled)
             .padding(.trailing, Constants.inset + style.insets.trailing)

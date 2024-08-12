@@ -41,6 +41,12 @@ public struct SWFieldStyle {
     /// Whether the field is disabled.
     public fileprivate(set) var disabled: Binding<Bool> = .constant(false)
     
+    /// The custom icon used when the field is disabled.
+    public fileprivate(set) var disabledIcon: Image? = nil
+    
+    /// The custom icon for the picker field.
+    public fileprivate(set) var pickerIcon: Image? = nil
+    
     /// Additional view from the left side of the field.
     public fileprivate(set) var extraView: AnyView? = nil
 }
@@ -148,6 +154,24 @@ public struct DisabledSWFieldStyleValue: SWFieldStyleValue {
 }
 extension SWFieldStyleValue where Self == DisabledSWFieldStyleValue {
     public static var disabled: Self { DisabledSWFieldStyleValue() }
+}
+
+// MARK: - Disabled icon
+
+public struct DisabledIconSWFieldStyleValue: SWFieldStyleValue {
+    public var keyPath: WritableKeyPath<SWFieldStyle, Image?> { \.disabledIcon }
+}
+extension SWFieldStyleValue where Self == DisabledIconSWFieldStyleValue {
+    public static var disabledIcon: Self { DisabledIconSWFieldStyleValue() }
+}
+
+// MARK: - Picker icon
+
+public struct PickerIconSWFieldStyleValue: SWFieldStyleValue {
+    public var keyPath: WritableKeyPath<SWFieldStyle, Image?> { \.pickerIcon }
+}
+extension SWFieldStyleValue where Self == PickerIconSWFieldStyleValue {
+    public static var pickerIcon: Self { PickerIconSWFieldStyleValue() }
 }
 
 // MARK: - Extra view

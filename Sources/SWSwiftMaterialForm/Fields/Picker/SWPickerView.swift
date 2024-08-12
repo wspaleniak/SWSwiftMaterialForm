@@ -323,7 +323,7 @@ public struct SWPickerView: View {
             if style.disabled.wrappedValue {
                 disabledIcon
             } else {
-                chevronIcon
+                pickerIcon
             }
         }
         .frame(maxWidth: .infinity)
@@ -384,8 +384,8 @@ public struct SWPickerView: View {
         }
     }
     
-    private var chevronIcon: some View {
-        Image(systemName: "chevron.down")
+    private var pickerIcon: some View {
+        (style.pickerIcon ?? Image(systemName: "chevron.down"))
             .rotationEffect(.degrees(isFocused ? 180 : 0))
             .font(style.configuration.fonts.text)
             .foregroundStyle(labelColor)
@@ -393,7 +393,7 @@ public struct SWPickerView: View {
     }
     
     private var disabledIcon: some View {
-        Image(systemName: "lock.fill")
+        (style.disabledIcon ?? Image(systemName: "lock.fill"))
             .font(style.configuration.fonts.text)
             .foregroundStyle(style.configuration.colors.labelDisabled)
             .padding(.trailing, Constants.inset + style.insets.trailing)
