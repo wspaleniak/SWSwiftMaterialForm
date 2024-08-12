@@ -1,5 +1,5 @@
 //
-//  SWDatePickerView.swift
+//  SWPicker.swift
 //  SWSwiftMaterialForm
 //
 //  Created by Wojciech Spaleniak on 27/07/2024.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct SWDatePickerView: View {
+public struct SWPicker: View {
     
     // MARK: - Enums
     
@@ -16,6 +16,8 @@ public struct SWDatePickerView: View {
         static let inset: CGFloat = 8.0
         static let labelHorizontalInset: CGFloat = 6.0
         static let labelVerticalInset: CGFloat = 1.0
+        static let pickerHeight: CGFloat = 140.0
+        static let pickerFont: Font = .system(size: 23, weight: .regular)
         static let toolbarVerticalInset: CGFloat = 12.0
         static let toolbarHorizontalInset: CGFloat = 24.0
         static let underlineHeight: CGFloat = 4.0
@@ -35,12 +37,12 @@ public struct SWDatePickerView: View {
     /// Displayed as a placeholder and label.
     private(set) var title: String
     
-    /// The type of the picker with the format as string.
-    private(set) var type: SWDatePickerType
+    /// All options for the picker.
+    private(set) var data: [String]
     
-    /// The selected formatted date from the picker.
+    /// The selected option from the picker.
     @Binding
-    private(set) var selection: String?
+    private(set) var selection: Int?
     
     /// The id of the field.
     /// Assigned in the container view.
@@ -52,10 +54,6 @@ public struct SWDatePickerView: View {
     /// The current state of the field.
     @State
     private(set) var state: SWFieldState = .empty
-    
-    /// The selected raw date from the picker.
-    @State
-    private var selectedDate: Date = .now
     
     /// Whether the field is focused.
     /// Depends on e.g. the focusedFieldID from the container.
@@ -78,11 +76,6 @@ public struct SWDatePickerView: View {
     /// The height of the text in the field.
     @State
     private var textHeight: CGFloat = .zero
-    
-    /// The width of the field.
-    /// Used for set the maximum width of the picker.
-    @State
-    private var fieldWidth: CGFloat = .zero
     
     /// The minimum height of the field.
     private var minFieldHeight: CGFloat {
@@ -165,47 +158,27 @@ public struct SWDatePickerView: View {
         containerViewModel.style.backgroundColor
     }
     
-    /// The text value of the selected date or hour from the picker.
+    /// The text value of the selected option from the picker.
     private var text: String {
         switch state {
         case .empty, .emptyError: ""
-        default: if let selection { selection } else { dateToString(selectedDate) }
+        default: if let selection { data[selection] } else { "-" }
         }
-    }
-    
-    /// The date picker components available for the selected type.
-    private var components: DatePickerComponents {
-        switch type {
-        case .date: [.date]
-        case .hour: [.hourAndMinute]
-        case .dateAndHour: [.date, .hourAndMinute]
-        }
-    }
-    
-    /// The date formatter for the selected date.
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = switch type {
-        case .date(let format): format
-        case .hour(let format): format
-        case .dateAndHour(let format): format
-        }
-        return formatter
     }
     
     // MARK: - Init
     
     public init(
         title: String,
-        type: SWDatePickerType,
-        selection: Binding<String?>
+        data: [String],
+        selection: Binding<Int?>
     ) {
         self.title = title
-        self.type = type
+        self.data = data
         self._selection = selection
     }
     
-    // MARK: -  Body
+    // MARK: - Body
     
     public var body: some View {
         VStack(spacing: 4) {
@@ -225,25 +198,7 @@ public struct SWDatePickerView: View {
             ]
         )
         .onChange(of: selection) { newValue in
-            guard let newValue else {
-                validate(selection: newValue)
-                return
-            }
-            guard let newDate = stringToDate(newValue) else {
-                self.selection = nil
-                return
-            }
-            guard newDate != selectedDate else {
-                return
-            }
-            selectedDate = newDate
             validate(selection: newValue)
-        }
-        .onChange(of: selectedDate) { newValue in
-            guard dateToString(newValue) != selection else {
-                return
-            }
-            selection = dateToString(newValue)
         }
         .onChange(of: containerViewModel.focusedFieldID) { newValue in
             if newValue == id && !isFocused {
@@ -257,10 +212,7 @@ public struct SWDatePickerView: View {
             }
         }
         .onChange(of: isFocused) { newValue in
-            if !wasTouched && newValue {
-                selection = dateToString(selectedDate)
-                wasTouched = true
-            }
+            if !wasTouched && newValue { wasTouched = true }
             validate(isFocused: newValue)
             containerViewModel.hideKeyboard(newValue)
         }
@@ -279,15 +231,6 @@ public struct SWDatePickerView: View {
             containerViewModel.setFocus(on: id)
         }
         .onAppear {
-            guard let selection else {
-                validate()
-                return
-            }
-            guard let newDate = stringToDate(selection) else {
-                self.selection = nil
-                return
-            }
-            selectedDate = newDate
             validate()
         }
         .disabled(style.disabled.wrappedValue)
@@ -334,7 +277,6 @@ public struct SWDatePickerView: View {
         .overlay {
             label
         }
-        .readSize { fieldWidth = $0.width }
     }
     
     private var label: some View {
@@ -389,13 +331,17 @@ public struct SWDatePickerView: View {
     }
     
     private var picker: some View {
-        DatePicker(
-            "",
-            selection: $selectedDate,
-            displayedComponents: components
-        )
-        .frame(maxWidth: fieldWidth)
-        .datePickerStyle(.wheel)
+        Picker("", selection: $selection) {
+            Group {
+                Text("-").tag(Optional<Int>.none)
+                ForEach(data.indices, id: \.self) { index in
+                    Text(data[index]).tag(Optional(index))
+                }
+            }
+            .font(Constants.pickerFont)
+        }
+        .frame(height: Constants.pickerHeight)
+        .pickerStyle(.wheel)
     }
     
     private var toolbar: some View {
@@ -470,16 +416,6 @@ public struct SWDatePickerView: View {
     }
     
     // MARK: - Private methods
-    
-    /// Method allows to change the date format from Date to String.
-    private func dateToString(_ date: Date) -> String {
-        return dateFormatter.string(from: date)
-    }
-    
-    /// Method allows to change the date format from String to Date.
-    private func stringToDate(_ string: String) -> Date? {
-        return dateFormatter.date(from: string)
-    }
     
     /// Method allows to validate the picker field.
     private func validate(selection: Any? = nil, isFocused: Bool? = nil) {

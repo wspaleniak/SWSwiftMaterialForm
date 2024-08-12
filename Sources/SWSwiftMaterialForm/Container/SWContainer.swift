@@ -1,5 +1,5 @@
 //
-//  SWContainerView.swift
+//  SWContainer.swift
 //  SWSwiftMaterialForm
 //
 //  Created by Wojciech Spaleniak on 19/07/2024.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct SWContainerView<T: View>: View {
+public struct SWContainer<T: View>: View {
     
     // MARK: - Properties
     

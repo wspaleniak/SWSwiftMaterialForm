@@ -1,14 +1,14 @@
 //
-//  SWTextEditorView.swift
+//  SWTextField.swift
 //  SWSwiftMaterialForm
 //
-//  Created by Wojciech Spaleniak on 24/07/2024.
+//  Created by Wojciech Spaleniak on 19/07/2024.
 //  Copyright © 2024 Wojciech Spaleniak. All rights reserved.
 //
 
 import SwiftUI
 
-public struct SWTextEditorView: View {
+public struct SWTextField: View {
     
     // MARK: - Enums
     
@@ -16,7 +16,6 @@ public struct SWTextEditorView: View {
         static let inset: CGFloat = 8.0
         static let labelHorizontalInset: CGFloat = 6.0
         static let labelVerticalInset: CGFloat = 1.0
-        static let textEditorHorizontalInset: CGFloat = 3.0
         static let underlineHeight: CGFloat = 4.0
     }
     
@@ -63,6 +62,10 @@ public struct SWTextEditorView: View {
     @State
     private var errorMessage: String? = nil
     
+    /// The width of the extra view.
+    @State
+    private var extraViewWidth: CGFloat = .zero
+    
     /// The height of the text in the field.
     @State
     private var textHeight: CGFloat = .zero
@@ -81,15 +84,10 @@ public struct SWTextEditorView: View {
         }
     }
     
-    /// The vertical offset of the field.
-    private var verticalOffset: CGFloat {
-        textHeight / 2 + Constants.inset + style.insets.top
-    }
-    
     /// The vertical offset of the field label.
     private var labelVerticalOffset: CGFloat {
         switch state {
-        case .empty, .emptyError: -fieldHeight / 2 + verticalOffset
+        case .empty, .emptyError: .zero
         default: -fieldHeight / 2
         }
     }
@@ -221,6 +219,9 @@ public struct SWTextEditorView: View {
         .onTapGesture {
             containerViewModel.setFocus(on: id)
         }
+        .onSubmit {
+            containerViewModel.setFocus(on: nil)
+        }
         .onAppear {
             limitText()
             validate()
@@ -233,7 +234,11 @@ public struct SWTextEditorView: View {
     
     private var field: some View {
         HStack(spacing: .zero) {
-            textEditor
+            if let extraView = style.extraView {
+                extraView
+                    .readSize { extraViewWidth = $0.width }
+            }
+            textField
             style.disabled.wrappedValue ? disabledIcon : nil
         }
         .frame(maxWidth: .infinity)
@@ -276,21 +281,27 @@ public struct SWTextEditorView: View {
             Spacer()
         }
         .padding(.horizontal, Constants.inset)
-        .padding(.leading, style.insets.leading - Constants.labelHorizontalInset)
+        .padding(.leading, style.insets.leading - Constants.labelHorizontalInset + extraViewWidth)
         .padding(.trailing, style.insets.trailing - Constants.labelHorizontalInset)
         .offset(y: labelVerticalOffset)
     }
     
-    private var textEditor: some View {
-        TextEditor(text: $text)
-            .padding(.horizontal, Constants.textEditorHorizontalInset)
-            .padding(style.insets)
-            .frame(height: fieldHeight)
-            .font(style.configuration.fonts.text)
-            .tint(style.configuration.colors.tintColor)
-            .foregroundStyle(style.configuration.colors.textColor)
-            .focused($isFocused)
-            .textEditorTransparentScrolling()
+    @ViewBuilder
+    private var textField: some View {
+        Group {
+            if style.secureText {
+                SecureField("", text: $text)
+            } else {
+                TextField("", text: $text)
+            }
+        }
+        .padding(Constants.inset)
+        .padding(style.insets)
+        .frame(height: fieldHeight)
+        .font(style.configuration.fonts.text)
+        .tint(style.configuration.colors.tintColor)
+        .foregroundStyle(style.configuration.colors.textColor)
+        .focused($isFocused)
     }
     
     private var underline: some View {
@@ -307,7 +318,6 @@ public struct SWTextEditorView: View {
             .font(style.configuration.fonts.text)
             .foregroundStyle(style.configuration.colors.labelDisabled)
             .padding(.trailing, Constants.inset + style.insets.trailing)
-            .offset(y: -fieldHeight / 2 + verticalOffset)
     }
     
     private var errorLabel: some View {

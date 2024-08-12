@@ -60,7 +60,7 @@ public protocol SWContainerStyleValue {
 }
 
 extension View {
-    public func containerStyle<T: SWContainerStyleValue>(key: T, _ value: T.Value) -> some View {
+    public func containerStyle<T: SWContainerStyleValue>(_ key: T, _ value: T.Value) -> some View {
         transformEnvironment(\.containerStyle) { containerStyle in
             containerStyle[keyPath: key.keyPath] = value
         }

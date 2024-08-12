@@ -68,7 +68,7 @@ public protocol SWFieldStyleValue {
 }
 
 extension View {
-    public func fieldStyle<T: SWFieldStyleValue>(key: T, _ value: T.Value) -> some View {
+    public func fieldStyle<T: SWFieldStyleValue>(_ key: T, _ value: T.Value) -> some View {
         transformEnvironment(\.fieldStyle) { fieldStyle in
             fieldStyle[keyPath: key.keyPath] = value
         }
