@@ -10,6 +10,9 @@ import SwiftUI
 
 public struct SWFieldStyle {
     
+    /// The field placeholder text if different from field title.
+    public fileprivate(set) var placeholder: String? = nil
+    
     /// The configuration of the main field properties.
     public fileprivate(set) var configuration: SWFieldStyleConfiguration = .border
     
@@ -73,6 +76,15 @@ extension View {
             fieldStyle[keyPath: key.keyPath] = value
         }
     }
+}
+
+// MARK: - Placeholder
+
+public struct PlaceholderSWFieldStyleValue: SWFieldStyleValue {
+    public var keyPath: WritableKeyPath<SWFieldStyle, String?> { \.placeholder }
+}
+extension SWFieldStyleValue where Self == PlaceholderSWFieldStyleValue {
+    public static var placeholder: Self { PlaceholderSWFieldStyleValue() }
 }
 
 // MARK: - Configuration

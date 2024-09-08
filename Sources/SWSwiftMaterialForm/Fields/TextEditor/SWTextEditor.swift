@@ -31,7 +31,6 @@ public struct SWTextEditor: View {
     private var style
     
     /// The title of the field.
-    /// Displayed as a placeholder and label.
     private(set) var title: String
     
     /// The text entered into the field by the user.
@@ -153,6 +152,14 @@ public struct SWTextEditor: View {
         containerViewModel.style.backgroundColor
     }
     
+    /// The title of the field label and placeholder.
+    private var labelTitle: String {
+        switch state {
+        case .empty, .emptyError: style.placeholder ?? title
+        default: title
+        }
+    }
+    
     // MARK: - Init
     
     public init(
@@ -264,7 +271,7 @@ public struct SWTextEditor: View {
     
     private var label: some View {
         HStack {
-            Text(title)
+            Text(labelTitle)
                 .lineLimit(1)
                 .padding(.horizontal, Constants.labelHorizontalInset)
                 .padding(.vertical, Constants.labelVerticalInset)

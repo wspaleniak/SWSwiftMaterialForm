@@ -34,7 +34,6 @@ public struct SWPicker: View {
     private var style
     
     /// The title of the field.
-    /// Displayed as a placeholder and label.
     private(set) var title: String
     
     /// All options for the picker.
@@ -156,6 +155,14 @@ public struct SWPicker: View {
     /// The color of the form background.
     private var formBackgroundColor: Color {
         containerViewModel.style.backgroundColor
+    }
+    
+    /// The title of the field label and placeholder.
+    private var labelTitle: String {
+        switch state {
+        case .empty, .emptyError: style.placeholder ?? title
+        default: title
+        }
     }
     
     /// The text value of the selected option from the picker.
@@ -283,7 +290,7 @@ public struct SWPicker: View {
         VStack(spacing: .zero) {
             ZStack {
                 HStack {
-                    Text(title)
+                    Text(labelTitle)
                         .lineLimit(1)
                         .padding(.horizontal, Constants.labelHorizontalInset)
                         .padding(.vertical, Constants.labelVerticalInset)

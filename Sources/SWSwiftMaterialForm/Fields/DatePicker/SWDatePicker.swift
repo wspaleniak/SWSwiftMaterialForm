@@ -32,7 +32,6 @@ public struct SWDatePicker: View {
     private var style
     
     /// The title of the field.
-    /// Displayed as a placeholder and label.
     private(set) var title: String
     
     /// The type of the picker with the format as string.
@@ -163,6 +162,14 @@ public struct SWDatePicker: View {
     /// The color of the form background.
     private var formBackgroundColor: Color {
         containerViewModel.style.backgroundColor
+    }
+    
+    /// The title of the field label and placeholder.
+    private var labelTitle: String {
+        switch state {
+        case .empty, .emptyError: style.placeholder ?? title
+        default: title
+        }
     }
     
     /// The text value of the selected date or hour from the picker.
@@ -341,7 +348,7 @@ public struct SWDatePicker: View {
         VStack(spacing: .zero) {
             ZStack {
                 HStack {
-                    Text(title)
+                    Text(labelTitle)
                         .lineLimit(1)
                         .padding(.horizontal, Constants.labelHorizontalInset)
                         .padding(.vertical, Constants.labelVerticalInset)
