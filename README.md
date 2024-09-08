@@ -23,7 +23,7 @@ To install *SWSwiftMaterialForm* in your project follow the steps below:
 Or add following dependency to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/wspaleniak/SWSwiftMaterialForm.git", .upToNextMajor(from: "1.0.0"))
+.package(url: "https://github.com/wspaleniak/SWSwiftMaterialForm.git", .upToNextMajor(from: "1.0.1"))
 ```
 
 ## How to use
@@ -160,6 +160,7 @@ SWTextField(
   title: "Login",
   text: $loginText
 )
+.fieldStyle(.placeholder, "Name (optional)") // Custom placeholder if different from field title.
 .fieldStyle(.configuration, .comboShadow) // Configuration of the field appearance.
 .fieldStyle(.standardValidator, .login) // Standard field validator.
 .fieldStyle(.required, .required(message: "Your login is required.")) // Whether the field is required.
