@@ -27,8 +27,7 @@ public struct SWContainer<T: View>: View {
     @Binding
     private var errors: Bool
     
-    @ViewBuilder
-    private var builder: () -> T
+    private var builder: T
     
     // MARK: - Init
     
@@ -39,14 +38,14 @@ public struct SWContainer<T: View>: View {
     ) {
         self.spacing = spacing
         self._errors = errors
-        self.builder = builder
+        self.builder = builder()
     }
     
     // MARK: - Body
     
     public var body: some View {
         VStack(spacing: spacing) {
-            builder()
+            builder
                 .environmentObject(viewModel)
         }
         .onPreferenceChange(SWFieldPreferenceKey.self) { newFields in

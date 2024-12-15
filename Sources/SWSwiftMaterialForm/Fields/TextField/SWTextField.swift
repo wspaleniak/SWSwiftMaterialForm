@@ -309,6 +309,10 @@ public struct SWTextField: View {
         .tint(style.configuration.colors.tintColor)
         .foregroundStyle(style.configuration.colors.textColor)
         .focused($isFocused)
+        .simultaneousGesture(
+            TapGesture()
+                .onEnded { containerViewModel.setFocus(on: id) }
+        )
     }
     
     private var underline: some View {

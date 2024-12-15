@@ -32,6 +32,9 @@ public final class SWContainerViewModel: ObservableObject {
     
     /// Method allows to set the focus on a selected field.
     public func setFocus(on fieldID: Int?) {
+        guard fieldID != focusedFieldID else {
+            return
+        }
         focusedFieldID = fieldID
     }
     
