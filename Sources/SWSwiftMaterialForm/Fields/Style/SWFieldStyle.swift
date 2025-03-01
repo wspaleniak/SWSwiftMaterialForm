@@ -29,6 +29,9 @@ public struct SWFieldStyle {
     /// Whether the field is required.
     public fileprivate(set) var required: SWValidationRequired = .notRequired
     
+    /// The custom error message for the field e.g. when receiving an error from the server.
+    public fileprivate(set) var customErrorMessage: Binding<String?> = .constant(nil)
+    
     /// Whether the field text is secured and visible as dots.
     public fileprivate(set) var secureText: Bool = false
     
@@ -121,6 +124,15 @@ public struct RequiredSWFieldStyleValue: SWFieldStyleValue {
 }
 extension SWFieldStyleValue where Self == RequiredSWFieldStyleValue {
     public static var required: Self { RequiredSWFieldStyleValue() }
+}
+
+// MARK: - Custom error message
+
+public struct CustomErrorMessageSWFieldStyleValue: SWFieldStyleValue {
+    public var keyPath: WritableKeyPath<SWFieldStyle, Binding<String?>> { \.customErrorMessage }
+}
+extension SWFieldStyleValue where Self == CustomErrorMessageSWFieldStyleValue {
+    public static var customErrorMessage: Self { CustomErrorMessageSWFieldStyleValue() }
 }
 
 // MARK: - Secure text

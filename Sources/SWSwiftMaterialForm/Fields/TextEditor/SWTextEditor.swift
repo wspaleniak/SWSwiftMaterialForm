@@ -225,6 +225,19 @@ public struct SWTextEditor: View {
                 }
             }
         }
+        .onChange(of: style.customErrorMessage.wrappedValue) { newValue in
+            if let newValue, !style.disabled.wrappedValue {
+                let isEmpty = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                if isFocused {
+                    state = .activeError
+                } else if isEmpty {
+                    state = .emptyError(newValue)
+                } else {
+                    state = .filledError(newValue)
+                }
+                style.customErrorMessage.wrappedValue = nil
+            }
+        }
         .onTapGesture {
             containerViewModel.setFocus(on: id)
         }
