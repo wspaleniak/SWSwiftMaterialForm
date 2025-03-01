@@ -23,7 +23,7 @@ To install *SWSwiftMaterialForm* in your project follow the steps below:
 Or add following dependency to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/wspaleniak/SWSwiftMaterialForm.git", .upToNextMajor(from: "1.0.2"))
+.package(url: "https://github.com/wspaleniak/SWSwiftMaterialForm.git", .upToNextMajor(from: "1.0.3"))
 ```
 
 ## How to use
@@ -154,7 +154,13 @@ In *SWSwiftMaterialForm*, each field has dedicated modifiers `.fieldStyle(key:va
 private var loginText: String = ""
 
 @State
+private var loginErrorText: String = ""
+
+@State
 private var isDisabled: Bool = false
+
+@State
+private var forceValidation: Bool = false
 
 SWTextField(
   title: "Login",
@@ -164,6 +170,8 @@ SWTextField(
 .fieldStyle(.configuration, .comboShadow) // Configuration of the field appearance.
 .fieldStyle(.standardValidator, .login) // Standard field validator.
 .fieldStyle(.required, .required(message: "Your login is required.")) // Whether the field is required.
+.fieldStyle(.forceValidation, $forceValidation) // Allows to force validation of the field.
+.fieldStyle(.customErrorMessage, $loginErrorText) // Allows to set custom error message for the field.
 .fieldStyle(.secureText, false) // Allows to hide text in the field.
 .fieldStyle(.limitText, 32) // Allows to limit text in the field.
 .fieldStyle(.height, 48) // Height of the field.
