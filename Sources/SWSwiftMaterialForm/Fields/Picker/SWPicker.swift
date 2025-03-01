@@ -235,7 +235,7 @@ public struct SWPicker: View {
             }
         }
         .onChange(of: style.customErrorMessage.wrappedValue) { newValue in
-            if let newValue, !style.disabled.wrappedValue {
+            if !newValue.trimmingCharacters(in: .whitespaces).isEmpty, !style.disabled.wrappedValue {
                 let isEmpty = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                 if isFocused {
                     state = .activeError
@@ -244,7 +244,7 @@ public struct SWPicker: View {
                 } else {
                     state = .filledError(newValue)
                 }
-                style.customErrorMessage.wrappedValue = nil
+                style.customErrorMessage.wrappedValue = ""
             }
         }
         .onChange(of: style.forceValidation.wrappedValue) { newValue in

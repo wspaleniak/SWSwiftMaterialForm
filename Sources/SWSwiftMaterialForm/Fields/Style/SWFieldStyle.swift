@@ -33,7 +33,7 @@ public struct SWFieldStyle {
     public fileprivate(set) var forceValidation: Binding<Bool> = .constant(false)
     
     /// The custom error message for the field e.g. when receiving an error from the server.
-    public fileprivate(set) var customErrorMessage: Binding<String?> = .constant(nil)
+    public fileprivate(set) var customErrorMessage: Binding<String> = .constant("")
     
     /// Whether the field text is secured and visible as dots.
     public fileprivate(set) var secureText: Bool = false
@@ -141,7 +141,7 @@ extension SWFieldStyleValue where Self == ForceValidationSWFieldStyleValue {
 // MARK: - Custom error message
 
 public struct CustomErrorMessageSWFieldStyleValue: SWFieldStyleValue {
-    public var keyPath: WritableKeyPath<SWFieldStyle, Binding<String?>> { \.customErrorMessage }
+    public var keyPath: WritableKeyPath<SWFieldStyle, Binding<String>> { \.customErrorMessage }
 }
 extension SWFieldStyleValue where Self == CustomErrorMessageSWFieldStyleValue {
     public static var customErrorMessage: Self { CustomErrorMessageSWFieldStyleValue() }
