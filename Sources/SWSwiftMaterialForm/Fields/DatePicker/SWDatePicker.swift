@@ -295,6 +295,12 @@ public struct SWDatePicker: View {
                 style.customErrorMessage.wrappedValue = nil
             }
         }
+        .onChange(of: style.forceValidation.wrappedValue) { newValue in
+            if newValue {
+                validate(wasTouched: true)
+                style.forceValidation.wrappedValue = false
+            }
+        }
         .onTapGesture {
             containerViewModel.setFocus(on: id)
         }
@@ -502,14 +508,14 @@ public struct SWDatePicker: View {
     }
     
     /// Method allows to validate the picker field.
-    private func validate(selection: Any? = nil, isFocused: Bool? = nil) {
+    private func validate(selection: Any? = nil, isFocused: Bool? = nil, wasTouched: Bool? = nil) {
         SWValidationHelper.validateFieldPicker(
             selection: selection ?? self.selection,
             state: &state,
             isRequired: style.required,
             isFocused: isFocused ?? self.isFocused,
             isDisabled: style.disabled.wrappedValue,
-            wasTouched: wasTouched
+            wasTouched: wasTouched ?? self.wasTouched
         )
     }
 }

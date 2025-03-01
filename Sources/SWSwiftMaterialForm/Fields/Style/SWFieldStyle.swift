@@ -29,6 +29,9 @@ public struct SWFieldStyle {
     /// Whether the field is required.
     public fileprivate(set) var required: SWValidationRequired = .notRequired
     
+    /// The force validation of the field.
+    public fileprivate(set) var forceValidation: Binding<Bool> = .constant(false)
+    
     /// The custom error message for the field e.g. when receiving an error from the server.
     public fileprivate(set) var customErrorMessage: Binding<String?> = .constant(nil)
     
@@ -124,6 +127,15 @@ public struct RequiredSWFieldStyleValue: SWFieldStyleValue {
 }
 extension SWFieldStyleValue where Self == RequiredSWFieldStyleValue {
     public static var required: Self { RequiredSWFieldStyleValue() }
+}
+
+// MARK: - Force validation
+
+public struct ForceValidationSWFieldStyleValue: SWFieldStyleValue {
+    public var keyPath: WritableKeyPath<SWFieldStyle, Binding<Bool>> { \.forceValidation }
+}
+extension SWFieldStyleValue where Self == ForceValidationSWFieldStyleValue {
+    public static var forceValidation: Self { ForceValidationSWFieldStyleValue() }
 }
 
 // MARK: - Custom error message

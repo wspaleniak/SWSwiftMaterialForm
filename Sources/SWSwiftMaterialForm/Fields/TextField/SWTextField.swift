@@ -236,6 +236,12 @@ public struct SWTextField: View {
                 style.customErrorMessage.wrappedValue = nil
             }
         }
+        .onChange(of: style.forceValidation.wrappedValue) { newValue in
+            if newValue {
+                validate(wasTouched: true)
+                style.forceValidation.wrappedValue = false
+            }
+        }
         .onTapGesture {
             containerViewModel.setFocus(on: id)
         }
@@ -378,7 +384,7 @@ public struct SWTextField: View {
     }
     
     /// Method allows to validate the text entered in the field.
-    private func validate(text: String? = nil, isFocused: Bool? = nil) {
+    private func validate(text: String? = nil, isFocused: Bool? = nil, wasTouched: Bool? = nil) {
         SWValidationHelper.validateFieldText(
             text: text ?? self.text,
             state: &state,
@@ -387,7 +393,7 @@ public struct SWTextField: View {
             isRequired: style.required,
             isFocused: isFocused ?? self.isFocused,
             isDisabled: style.disabled.wrappedValue,
-            wasTouched: wasTouched
+            wasTouched: wasTouched ?? self.wasTouched
         )
     }
 }
