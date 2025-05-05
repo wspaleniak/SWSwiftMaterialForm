@@ -28,7 +28,7 @@ public struct SWContainerStyle {
     var animation: Animation? = .smooth
     
     /// The color of the container background.
-    var backgroundColor: Color = Color(uiColor: .systemBackground)
+    var backgroundColor: Color = .white
     
     /// Whether the toolbar is visible.
     var toolbarVisible: Bool = true

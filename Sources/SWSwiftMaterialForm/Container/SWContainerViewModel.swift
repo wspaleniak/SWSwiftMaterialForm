@@ -8,7 +8,8 @@
 
 import SwiftUI
 
-public final class SWContainerViewModel: ObservableObject {
+@MainActor
+public final class SWContainerViewModel: ObservableObject, Sendable {
     
     // MARK: - Properties
     

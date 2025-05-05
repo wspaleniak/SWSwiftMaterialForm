@@ -12,22 +12,22 @@ public struct SWContainer<T: View>: View {
     
     // MARK: - Properties
     
-    @StateObject
-    private var viewModel = SWContainerViewModel()
-    
     /// The custom container properties.
     @Environment(\.containerStyle)
     private var style
     
-    /// The spacing between container fields.
-    /// Get dynamic size - in the init method add value with wrapper @ScaledMetric.
-    private(set) var spacing: CGFloat
+    @StateObject
+    private var viewModel = SWContainerViewModel()
     
     /// Whether there are errors in any field.
     @Binding
     private var errors: Bool
     
-    private var builder: T
+    /// The spacing between container fields.
+    /// Get dynamic size - in the init method add value with wrapper @ScaledMetric.
+    private let spacing: CGFloat
+    
+    private let builder: T
     
     // MARK: - Init
     
@@ -71,16 +71,16 @@ public struct SWContainer<T: View>: View {
         .onTapGesture {
             viewModel.setFocus(on: nil)
         }
-        .onAppear {
+        .task {
             viewModel.setContainerStyle(style)
             guard let firstField = viewModel.fields.first,
                   style.startWithFocusedFieldAfter > 0
             else { return }
-            Task { @MainActor in
-                try await Task.sleep(nanoseconds: UInt64(style.startWithFocusedFieldAfter) * 1_000_000_000)
-                if viewModel.focusedFieldID == nil {
-                    viewModel.setFocus(on: firstField.id.wrappedValue)
-                }
+            try? await Task.sleep(
+                nanoseconds: UInt64(style.startWithFocusedFieldAfter) * 1_000_000_000
+            )
+            if viewModel.focusedFieldID == nil {
+                viewModel.setFocus(on: firstField.id.wrappedValue)
             }
         }
         .toolbar {
