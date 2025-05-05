@@ -23,7 +23,7 @@ To install *SWSwiftMaterialForm* in your project follow the steps below:
 Or add following dependency to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/wspaleniak/SWSwiftMaterialForm.git", .upToNextMajor(from: "1.0.4"))
+.package(url: "https://github.com/wspaleniak/SWSwiftMaterialForm.git", .upToNextMajor(from: "1.0.5"))
 ```
 
 ## How to use
