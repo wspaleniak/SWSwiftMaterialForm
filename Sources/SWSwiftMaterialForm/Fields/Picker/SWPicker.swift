@@ -427,7 +427,6 @@ public struct SWPicker: View {
     
     private var errorLabel: some View {
         Text(errorMessage ?? "")
-            .lineLimit(2)
             .font(style.configuration.fonts.error)
             .foregroundStyle(style.configuration.colors.labelFilledError)
             .frame(maxWidth: .infinity, alignment: .leading)
