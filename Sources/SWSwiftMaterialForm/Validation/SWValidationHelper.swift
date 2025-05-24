@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SWValidationHelper {
+public enum SWValidationHelper {
     
     /// Only for fields with the text entered by the user.
     public static func validateFieldText(

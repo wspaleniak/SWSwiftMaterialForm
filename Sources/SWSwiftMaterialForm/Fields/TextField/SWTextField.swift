@@ -56,6 +56,10 @@ public struct SWTextField: View {
     @State
     private var wasTouched: Bool = false
     
+    /// Whether the field text is secured.
+    @State
+    private var secureText: Bool = true
+    
     /// The error message from the validator.
     /// Depends on the current state.
     @State
@@ -265,7 +269,11 @@ public struct SWTextField: View {
                     .readSize { extraViewWidth = $0.width }
             }
             textField
-            style.disabled.wrappedValue ? disabledIcon : nil
+            if style.disabled.wrappedValue {
+                disabledIcon
+            } else if style.secureText == .withToggle {
+                secureTextButton
+            }
         }
         .frame(maxWidth: .infinity)
         .frame(height: fieldHeight)
@@ -315,9 +323,10 @@ public struct SWTextField: View {
     @ViewBuilder
     private var textField: some View {
         Group {
-            if style.secureText {
+            switch style.secureText {
+            case .withToggle where secureText, .always:
                 SecureField("", text: $text)
-            } else {
+            default:
                 TextField("", text: $text)
             }
         }
@@ -348,6 +357,21 @@ public struct SWTextField: View {
             .font(style.configuration.fonts.text)
             .foregroundStyle(style.configuration.colors.labelDisabled)
             .padding(.trailing, Constants.inset + style.insets.trailing)
+    }
+    
+    private var secureTextButton: some View {
+        Button {
+            secureText.toggle()
+        } label: {
+            if secureText {
+                Image(systemName: "eye")
+            } else {
+                Image(systemName: "eye.slash")
+            }
+        }
+        .font(style.configuration.fonts.text)
+        .foregroundStyle(labelColor)
+        .padding(.trailing, Constants.inset + style.insets.trailing)
     }
     
     private var errorLabel: some View {

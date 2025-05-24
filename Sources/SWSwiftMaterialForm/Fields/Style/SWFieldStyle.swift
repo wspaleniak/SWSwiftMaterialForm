@@ -36,7 +36,7 @@ public struct SWFieldStyle {
     public fileprivate(set) var customErrorMessage: Binding<String> = .constant("")
     
     /// Whether the field text is secured and visible as dots.
-    public fileprivate(set) var secureText: Bool = false
+    public fileprivate(set) var secureText: SWFieldStyleSecureText? = nil
     
     /// The text limit for the field.
     public fileprivate(set) var limitText: Int? = nil
@@ -150,7 +150,7 @@ extension SWFieldStyleValue where Self == CustomErrorMessageSWFieldStyleValue {
 // MARK: - Secure text
 
 public struct SecureTextSWFieldStyleValue: SWFieldStyleValue {
-    public var keyPath: WritableKeyPath<SWFieldStyle, Bool> { \.secureText }
+    public var keyPath: WritableKeyPath<SWFieldStyle, SWFieldStyleSecureText?> { \.secureText }
 }
 extension SWFieldStyleValue where Self == SecureTextSWFieldStyleValue {
     public static var secureText: Self { SecureTextSWFieldStyleValue() }

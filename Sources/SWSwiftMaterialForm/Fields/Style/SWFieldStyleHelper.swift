@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct SWFieldStyleHelper {
+public enum SWFieldStyleHelper {
     
     /// Method allows to get color of the field label based on the current state and style.
     public static func getLabelColor(
