@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SWValidationHelper {
+public enum SWValidationHelper: Sendable {
     
     /// Only for fields with the text entered by the user.
     public static func validateFieldText(

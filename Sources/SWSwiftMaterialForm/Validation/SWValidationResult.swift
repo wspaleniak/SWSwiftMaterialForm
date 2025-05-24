@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SWValidationResult {
+public enum SWValidationResult: Sendable {
     /// Result of correct validation.
     case ok
     /// Result of incorrect validation with error message.

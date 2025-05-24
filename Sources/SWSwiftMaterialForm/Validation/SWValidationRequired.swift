@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SWValidationRequired {
+public enum SWValidationRequired: Sendable {
     /// Whether the field is not required.
     case notRequired
     /// Whether the field is required.

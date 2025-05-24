@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SWStandardValidator {
+public struct SWStandardValidator: Sendable {
     
     // MARK: - Properties
     

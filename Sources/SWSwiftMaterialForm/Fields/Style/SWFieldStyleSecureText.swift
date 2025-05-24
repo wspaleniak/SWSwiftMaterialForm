@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum SWFieldStyleSecureText {
+public enum SWFieldStyleSecureText: Sendable {
     /// The text in the text field is always invisible.
     case always
     /// Text in text field is visible or not.

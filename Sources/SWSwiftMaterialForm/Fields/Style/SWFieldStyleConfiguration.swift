@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct SWFieldStyleConfiguration {
+public struct SWFieldStyleConfiguration: Sendable {
     
     // MARK: - Properties
     

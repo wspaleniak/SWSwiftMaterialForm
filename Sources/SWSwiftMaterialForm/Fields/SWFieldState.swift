@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SWFieldState: Equatable {
+public enum SWFieldState: Equatable, Sendable {
     /// When the field is unfocused and the text is empty.
     case empty
     /// When the field is unfocused and the text is empty but the field is required.

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SWDatePickerType {
+public enum SWDatePickerType: Sendable {
     /// Only dates with the string format.
     case date(format: String = "dd.MM.yyyy")
     /// Only hours with the string format.

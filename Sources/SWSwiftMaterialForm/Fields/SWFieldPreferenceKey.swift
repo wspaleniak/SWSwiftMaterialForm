@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct SWFieldPreferenceKey: PreferenceKey {
+public struct SWFieldPreferenceKey: PreferenceKey, Sendable {
     public static var defaultValue: [SWFieldData] = []
     public static func reduce(value: inout [SWFieldData], nextValue: () -> [SWFieldData]) {
         value += nextValue()

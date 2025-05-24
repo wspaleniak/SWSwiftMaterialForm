@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct SWFieldData: Equatable {
+public struct SWFieldData: Equatable, Sendable {
     
     // MARK: - Properties
     
