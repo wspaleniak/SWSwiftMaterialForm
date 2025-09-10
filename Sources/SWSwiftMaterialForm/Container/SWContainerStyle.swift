@@ -28,7 +28,7 @@ public struct SWContainerStyle {
     var animation: Animation? = .smooth
     
     /// The color of the container background.
-    var backgroundColor: Color = .white
+    var backgroundColor: Color = Color(uiColor: .systemBackground)
     
     /// Whether the toolbar is visible.
     var toolbarVisible: Bool = true
@@ -43,15 +43,8 @@ public struct SWContainerStyle {
     var toolbarFont: Font = .body
 }
 
-struct SWContainerStyleKey: EnvironmentKey {
-    static let defaultValue = SWContainerStyle()
-}
-
 extension EnvironmentValues {
-    var containerStyle: SWContainerStyle {
-        get { self[SWContainerStyleKey.self] }
-        set { self[SWContainerStyleKey.self] = newValue }
-    }
+    @Entry var containerStyle = SWContainerStyle()
 }
 
 public protocol SWContainerStyleValue {

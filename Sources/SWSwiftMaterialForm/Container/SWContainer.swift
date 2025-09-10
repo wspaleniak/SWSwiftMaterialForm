@@ -48,6 +48,20 @@ public struct SWContainer<T: View>: View {
             builder
                 .environmentObject(viewModel)
         }
+        .onAppear {
+            viewModel.setContainerStyle(style)
+        }
+        .task {
+            guard let firstField = viewModel.fields.first,
+                  style.startWithFocusedFieldAfter > 0
+            else { return }
+            try? await Task.sleep(
+                nanoseconds: UInt64(style.startWithFocusedFieldAfter) * 1_000_000_000
+            )
+            if viewModel.focusedFieldID == nil {
+                viewModel.setFocus(on: firstField.id.wrappedValue)
+            }
+        }
         .onPreferenceChange(SWFieldPreferenceKey.self) { newFields in
             newFields.enumerated().forEach { index, fieldData in
                 fieldData.id.wrappedValue = index
@@ -70,18 +84,6 @@ public struct SWContainer<T: View>: View {
         }
         .onTapGesture {
             viewModel.setFocus(on: nil)
-        }
-        .task {
-            viewModel.setContainerStyle(style)
-            guard let firstField = viewModel.fields.first,
-                  style.startWithFocusedFieldAfter > 0
-            else { return }
-            try? await Task.sleep(
-                nanoseconds: UInt64(style.startWithFocusedFieldAfter) * 1_000_000_000
-            )
-            if viewModel.focusedFieldID == nil {
-                viewModel.setFocus(on: firstField.id.wrappedValue)
-            }
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {

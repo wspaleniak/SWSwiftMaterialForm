@@ -277,15 +277,15 @@ public struct SWTextField: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: fieldHeight)
-        .background(
+        .background {
             underline
-        )
-        .background(
+        }
+        .background {
             style.configuration.backgroundVisible ? backgroundColor : formBackgroundColor
-        )
-        .background(
+        }
+        .background {
             transparentReadSizeHelper
-        )
+        }
         .clipShape(
             RoundedRectangle(cornerRadius: style.configuration.cornerRadius)
         )
@@ -309,7 +309,7 @@ public struct SWTextField: View {
                 .padding(.vertical, Constants.labelVerticalInset)
                 .font(labelFont)
                 .foregroundStyle(labelColor)
-                .background(formBackgroundColor.opacity(labelBackgroundOpacity))
+                .background { formBackgroundColor.opacity(labelBackgroundOpacity) }
                 .clipShape(Capsule())
                 .allowsHitTesting(false)
             Spacer()

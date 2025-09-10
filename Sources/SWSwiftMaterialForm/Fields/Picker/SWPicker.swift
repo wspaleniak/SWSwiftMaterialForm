@@ -278,15 +278,15 @@ public struct SWPicker: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(
+        .background {
             underline
-        )
-        .background(
+        }
+        .background {
             style.configuration.backgroundVisible ? backgroundColor : formBackgroundColor
-        )
-        .background(
+        }
+        .background {
             transparentReadSizeHelper
-        )
+        }
         .clipShape(
             RoundedRectangle(cornerRadius: style.configuration.cornerRadius)
         )
@@ -315,7 +315,7 @@ public struct SWPicker: View {
                         .padding(.vertical, Constants.labelVerticalInset)
                         .font(labelFont)
                         .foregroundStyle(labelColor)
-                        .background(formBackgroundColor.opacity(labelBackgroundOpacity))
+                        .background { formBackgroundColor.opacity(labelBackgroundOpacity) }
                         .clipShape(Capsule())
                         .allowsHitTesting(false)
                     Spacer()

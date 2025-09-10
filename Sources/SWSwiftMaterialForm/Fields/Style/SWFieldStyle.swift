@@ -60,15 +60,8 @@ public struct SWFieldStyle {
     public fileprivate(set) var extraView: AnyView? = nil
 }
 
-struct SWFieldStyleKey: EnvironmentKey {
-    static let defaultValue = SWFieldStyle()
-}
-
 extension EnvironmentValues {
-    public var fieldStyle: SWFieldStyle {
-        get { self[SWFieldStyleKey.self] }
-        set { self[SWFieldStyleKey.self] = newValue }
-    }
+    @Entry var fieldStyle = SWFieldStyle()
 }
 
 public protocol SWFieldStyleValue {
